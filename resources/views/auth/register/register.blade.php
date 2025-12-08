@@ -191,7 +191,7 @@
 
 @push('scripts')
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        (function () {
             window.handleTelegramAuth = function (user) {
                 var agreement = document.getElementById('telegram_pd_agree');
                 if (!agreement || !agreement.checked) {
@@ -217,6 +217,6 @@
 
                 form.submit();
             };
-        });
+        })();
     </script>
 @endpush
