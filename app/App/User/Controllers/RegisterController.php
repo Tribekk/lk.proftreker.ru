@@ -3,13 +3,12 @@
 namespace App\User\Controllers;
 
 use App\Providers\RouteServiceProvider;
+use App\User\Requests\RegisterEmailRequest;
 use Domain\User\Actions\CreateUser;
-use Domain\User\Models\RegisterUser;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Support\Controller;
 
 class RegisterController extends Controller
@@ -23,21 +22,21 @@ class RegisterController extends Controller
         $this->middleware('guest');
     }
 
-    public function showRegistrationForm(RegisterUser $registerUser)
+    public function showRegistrationForm()
     {
-        $registerUser->flush();
         return view('auth.register.register');
     }
 
     /**
      * Handle a registration request for the application.
      *
-     * @param Request $request
-     * @param array $data
+     * @param RegisterEmailRequest $request
      * @return RedirectResponse|JsonResponse
      */
-    public function register(Request $request, array $data)
+    public function register(RegisterEmailRequest $request)
     {
+        $data = $request->validated();
+
         event(new Registered($user = $this->create($data)));
 
         $this->guard()->login($user, $request->filled('remember'));

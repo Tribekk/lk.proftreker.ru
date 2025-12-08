@@ -35,6 +35,9 @@ class CreateUser
             'orgunit_id' => $data['orgunit_id'] ?? null,
             'phone_verified_at' => $data['phone_verified_at'] ?? null,
             'personal_quiz_description' => $data['personal_quiz_description'] ?? '',
+            'telegram_id' => $data['telegram_id'] ?? null,
+            'telegram_username' => $data['telegram_username'] ?? null,
+            'telegram_photo_url' => $data['telegram_photo_url'] ?? null,
         ]);
     }
 }

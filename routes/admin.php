@@ -40,6 +40,7 @@ Route::middleware(['auth', AdminMiddleware::class])->group(function () {
             Route::get('users/create', [UserController::class, 'create'])->name('create');
             Route::post('users', [UserController::class, 'store'])->name('store');
             Route::get('users/teachers', [UserController::class, 'teachers'])->withoutMiddleware(AdminMiddleware::class)->name('teachers');
+            Route::delete('users/{user}', [UserController::class, 'destroy'])->name('destroy');
         });
 
         Route::prefix('schools')->name('schools.')->group(function () {

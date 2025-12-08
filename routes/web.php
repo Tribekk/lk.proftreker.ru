@@ -27,7 +27,6 @@ use App\User\Controllers\ObserveUserController;
 use App\User\Controllers\ProfileController;
 use App\User\Controllers\RoleAssignmentController;
 use App\User\Controllers\UserTypeController;
-use App\User\Controllers\RegisterVerificationController;
 use Domain\Consultant\Controllers\BusinessCardController;
 use Domain\Consultant\Controllers\MeetingScheduleController;
 use Domain\Consultant\Middleware\ConsultantMiddleware;

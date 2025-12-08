@@ -35,32 +35,32 @@ class AuthTest extends TestCase
     }
 
     /** @test */
-    public function redirectToRegisterIfDontHasRegisterUser()
+    public function guestCanViewRegisterPage()
     {
-        $this->get(route('register.verify'))
-            ->assertRedirect(route('register'));
+        $this->get(route('register'))
+            ->assertStatus(200);
     }
 
     /** @test */
     public function canRegister()
     {
         $user = factory(User::class)->make([
-            'phone' => '+79112434673',
-            'password_confirmation' => 'password',
+            'email' => 'new-user@example.com',
+        ]);
+
+        $payload = [
+            'first_name' => $user->first_name,
+            'last_name' => $user->last_name,
+            'middle_name' => $user->middle_name,
+            'email' => $user->email,
+            'password' => 'password123',
+            'password_confirmation' => 'password123',
             'pd_agree' => true,
-        ])->toArray();
-        $user['password'] = 'password';
+        ];
 
-        $response = $this->post(route('register'), $user);
-        $response->assertSessionHas('registerUser');
-
-        $registerUser = session()->get('registerUser');
-        $response = $this->post(route('register.verify'), ['code' => 'KML2']);
-        $response->assertSessionHasErrors('code');
-
-        $response = $this->post(route('register.verify'), ['code' => $registerUser->getCode()]);
+        $response = $this->post(route('register'), $payload);
         $response->assertRedirect(route('dashboard'));
-        $this->assertDatabaseHas('users', ['phone' => $user['phone']]);
+        $this->assertDatabaseHas('users', ['email' => $user->email]);
     }
 
     /** @test */

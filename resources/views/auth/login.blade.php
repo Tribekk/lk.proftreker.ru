@@ -14,13 +14,13 @@
             </div>
 
             <div class="form-group">
-                <label class="font-size-h6 font-weight-bolder text-dark">{{ __('Телефон')  }}</label>
+                <label class="font-size-h6 font-weight-bolder text-dark">{{ __('Телефон или email')  }}</label>
                 <input
                     class="form-control form-control-solid h-auto py-4 px-6 rounded-lg @error('username') is-invalid @enderror"
                     type="text"
                     name="username"
-                    id="phone"
-                    placeholder="+7 (___) ___ __ __"
+                    id="username"
+                    placeholder="+7 (___) ___ __ __ / example@mail.ru"
                     value="{{ old('username') }}"
                 />
                 @error('username')
@@ -65,10 +65,3 @@
     </div>
 @endsection
 
-@push('scripts')
-    <script>
-        $(document).ready(function() {
-            $("#phone").inputmask("+7 (999) 999 99 99");
-        })
-    </script>
-@endpush

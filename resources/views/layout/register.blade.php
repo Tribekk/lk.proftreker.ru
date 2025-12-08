@@ -20,32 +20,17 @@
                         <div class="wizard-nav wizard-nav__auth d-flex d-flex justify-content-center pt-10 pt-lg-20 pb-5">
                             <!--begin::Wizard Steps-->
                             <div class="wizard-steps">
-                                <!--begin::Wizard Step 1 Nav-->
-                                <div class="wizard-step" @if(Route::is('register')) data-wizard-state="current" @endif>
+                                <div class="wizard-step" data-wizard-state="current">
                                     <div class="wizard-wrapper">
                                         <div class="wizard-icon">
                                             <span class="wizard-number">1</span>
                                         </div>
                                         <div class="wizard-label">
                                             <h3 class="wizard-title">Создание аккаунта</h3>
-                                            <div class="wizard-desc">Введите данные от аккаунта</div>
+                                            <div class="wizard-desc">Введите email или используйте Telegram</div>
                                         </div>
                                     </div>
                                 </div>
-                                <!--end::Wizard Step 1 Nav-->
-                                <!--begin::Wizard Step 2 Nav-->
-                                <div class="wizard-step" @if(Route::is('register.verify')) data-wizard-state="current" @endif>
-                                    <div class="wizard-wrapper">
-                                        <div class="wizard-icon">
-                                            <span class="wizard-number">2</span>
-                                        </div>
-                                        <div class="wizard-label">
-                                            <h3 class="wizard-title">Подтверждение регистрации</h3>
-                                            <div class="wizard-desc">Подтвердите регистрацию путем ввода полученного СМС сообщения с кодом</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!--end::Wizard Step 2 Nav-->
                             </div>
                             <!--end::Wizard Steps-->
                         </div>
@@ -68,7 +53,6 @@
         <script src="{{ asset('plugins/custom/prismjs/prismjs.bundle.js') }}"></script>
         <script src="{{ asset('js/scripts.bundle.js') }}"></script>
         <!--end::Global Theme Bundle-->
-        <script src="{{ asset('js/pages/crud/forms/widgets/input-mask.js') }}"></script>
 
         <livewire:scripts />
 

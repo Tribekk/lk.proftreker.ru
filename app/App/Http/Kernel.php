@@ -2,7 +2,6 @@
 
 namespace App\Http;
 
-use App\User\Middleware\HasRegisterUser;
 use App\User\Middleware\HasResetPasswordCode;
 use App\User\Middleware\NoUserType;
 use Domain\Parent\Middleware\ParentRole;
@@ -68,7 +67,6 @@ class Kernel extends HttpKernel
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
-        'register.verify' => HasRegisterUser::class,
         'password.reset' => HasResetPasswordCode::class,
         'no_user_type' => NoUserType::class,
         'has_teacher_role' => HasTeacherRole::class,

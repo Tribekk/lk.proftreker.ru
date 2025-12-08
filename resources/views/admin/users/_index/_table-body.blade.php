@@ -35,6 +35,24 @@
             <div class=" text-primary mb-0">{{ $user->updated_at->format('d.m.Y') }}<br/>{{ $user->updated_at->format('H:i:s') }}</div>
         </td>
 
+        <td class="fit text-right" style="vertical-align: middle;">
+            @php($rootAdminPhone = unFormatPhone('+79221980375'))
+            @php($userPhone = $user->phone ? unFormatPhone($user->phone) : null)
+            @if(!$user->isAdmin && $userPhone !== $rootAdminPhone)
+                <form action="{{ route('admin.users.destroy', $user) }}"
+                      method="POST"
+                      onsubmit="return confirm('Удалить пользователя {{ $user->fullName }}?');">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-icon btn-light btn-sm" title="{{ __('Удалить') }}">
+                        <i class="la la-trash"></i>
+                    </button>
+                </form>
+            @else
+                <span class="text-muted">—</span>
+            @endif
+        </td>
+
     </tr>
 @endforeach
 </tbody>

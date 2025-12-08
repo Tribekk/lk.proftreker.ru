@@ -22,6 +22,8 @@ use Support\Controller;
 
 class UserController extends Controller
 {
+    protected const ROOT_ADMIN_PHONE = '+79221980375';
+
     public function index(Request $request, GetUsersAction $action)
     {
         return view('admin.users.index')
@@ -116,5 +118,26 @@ class UserController extends Controller
         }
 
         abort(403);
+    }
+
+    public function destroy(User $user)
+    {
+        if ($this->isProtectedUser($user)) {
+            return back()
+                ->withErrors(['user' => __('Нельзя удалить администратора.')]);
+        }
+
+        $user->delete();
+
+        return redirect()->route('admin.users.view')
+            ->with('status', __('Пользователь удален.'));
+    }
+
+    protected function isProtectedUser(User $user): bool
+    {
+        $rootPhone = unFormatPhone(self::ROOT_ADMIN_PHONE);
+        $userPhone = $user->phone ? unFormatPhone($user->phone) : null;
+
+        return $user->isAdmin || ($rootPhone && $userPhone && $rootPhone === $userPhone);
     }
 }

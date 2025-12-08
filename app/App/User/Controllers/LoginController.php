@@ -44,7 +44,7 @@ class LoginController extends Controller
         Validator::make($request->all(), [
             'username' => 'required|string|max:191',
             'password' => 'required|string|max:191',
-        ], [], ['username' => '«телефон»'])->validate();
+        ], [], ['username' => '«телефон или email»'])->validate();
     }
 
     public function username()

@@ -1,7 +1,10 @@
 @extends('layout.register')
 
+@php($telegramLogin = app(\Support\Telegram\TelegramLogin::class))
+@php($telegramBotUsername = $telegramLogin->botUsername())
+
 @section('content')
-    <div>
+    <div class="w-100">
 
         <form class="form" method="POST" action="{{ route('register') }}">
             @csrf
@@ -16,44 +19,41 @@
                 </span>
             </div>
 
-            @error('sms_register_error')
-                <x-alert type="danger" text="{{ $message }}" :close="false"></x-alert>
-            @enderror
-
-            <x-inputs.input-text-v title="{{ __('Телефон') }}" type="tel" value="{{ old('phone') }}" mask="+ 7 (###) ### ## ##" placeholder="+7 (___) ___ __ __" name="phone" id="phone" prepend-icon="la la-phone"  required></x-inputs.input-text-v>
-
-            <div class="form-group">
-                <label for="last_name" class="font-size-h6 font-weight-bolder text-dark required">{{ __('Фамилия') }}</label>
-                <input
-                    id="last_name"
-                    type="text"
-                    class="form-control form-control-solid h-auto py-4 px-6 rounded-lg @error('last_name') is-invalid @enderror"
-                    name="last_name"
-                    value="{{ old('last_name') }}"
-                    autocomplete="last_name">
-
-                    @error('last_name')
-                    <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
-            </div>
-
-            <div class="form-group">
-                <label for="first_name" class="font-size-h6 font-weight-bolder text-dark required">{{ __('Имя') }}</label>
-                <input
-                    id="first_name"
-                    type="text"
-                    class="form-control form-control-solid h-auto py-4 px-6 rounded-lg @error('first_name') is-invalid @enderror"
-                    name="first_name"
-                    value="{{ old('first_name') }}"
-                    autocomplete="first_name">
-
-                @error('first_name')
-                <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-                @enderror
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="last_name" class="font-size-h6 font-weight-bolder text-dark required">{{ __('Фамилия') }}</label>
+                        <input
+                            id="last_name"
+                            type="text"
+                            class="form-control form-control-solid h-auto py-4 px-6 rounded-lg @error('last_name') is-invalid @enderror"
+                            name="last_name"
+                            value="{{ old('last_name') }}"
+                            autocomplete="last_name">
+                        @error('last_name')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="first_name" class="font-size-h6 font-weight-bolder text-dark required">{{ __('Имя') }}</label>
+                        <input
+                            id="first_name"
+                            type="text"
+                            class="form-control form-control-solid h-auto py-4 px-6 rounded-lg @error('first_name') is-invalid @enderror"
+                            name="first_name"
+                            value="{{ old('first_name') }}"
+                            autocomplete="first_name">
+                        @error('first_name')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+                </div>
             </div>
 
             <div class="form-group">
@@ -65,11 +65,26 @@
                     name="middle_name"
                     value="{{ old('middle_name') }}"
                     autocomplete="middle_name">
-
                 @error('middle_name')
-                <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
+
+            <div class="form-group">
+                <label for="email" class="font-size-h6 font-weight-bolder text-dark required">{{ __('Email') }}</label>
+                <input
+                    id="email"
+                    type="email"
+                    class="form-control form-control-solid h-auto py-4 px-6 rounded-lg @error('email') is-invalid @enderror"
+                    name="email"
+                    value="{{ old('email') }}"
+                    autocomplete="email">
+                @error('email')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
                 @enderror
             </div>
 
@@ -81,11 +96,10 @@
                     class="form-control form-control-solid h-auto py-4 px-6 rounded-lg @error('password') is-invalid @enderror"
                     name="password"
                 >
-
                 @error('password')
-                <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
                 @enderror
             </div>
 
@@ -96,11 +110,11 @@
                     type="password"
                     class="form-control form-control-solid h-auto py-4 px-6 rounded-lg @error('password_confirmation') is-invalid @enderror"
                     name="password_confirmation"
-                    >
+                >
                 @error('password_confirmation')
-                <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
                 @enderror
             </div>
 
@@ -108,13 +122,14 @@
                 <div class="checkbox-inline @error('pd_agree') is-invalid @enderror">
                     <label class="checkbox">
                         <input type="checkbox" class="mr-3" name="pd_agree" {{ old('pd_agree') ? 'checked' : '' }}>
-                        <span></span>{{ __('Даю согласие на обработку своих персональных данных') }}</label>
+                        <span></span>{{ __('Даю согласие на обработку своих персональных данных') }}
+                    </label>
                 </div>
                 <div class="mt-4">
-                    <a class="font-size-h5" href="{{ url('политика_конфиденциальности.pdf') }}" target="_blank">Политика конфиденциальности</a>
+                    <a class="font-size-h5" href="{{ url('РїРѕР»РёС‚РёРєР°_РєРѕРЅС„РёРґРµРЅС†РёР°Р»СЊРЅРѕСЃС‚Рё.pdf') }}" target="_blank">Политика конфиденциальности</a>
                 </div>
                 @error('pd_agree')
-                <span class="invalid-feedback" role="alert">
+                    <span class="invalid-feedback d-block" role="alert">
                         <strong>{{ $message }}</strong>
                     </span>
                 @enderror
@@ -122,19 +137,83 @@
 
             <div class="pb-lg-0 pb-5">
                 <button type="submit" class="btn btn-primary font-weight-bolder font-size-h6 px-8 py-4 my-3 mr-3">
-                    {{ __('Продолжить') }}
+                    {{ __('Создать аккаунт') }}
                 </button>
             </div>
-
         </form>
 
+        <div class="separator separator-dashed my-10"></div>
+
+        <div>
+            <h4 class="font-weight-bolder text-dark mb-5">{{ __('Или войдите через Telegram') }}</h4>
+            <p class="text-muted font-size-lg mb-5">Telegram-аккаунт может использоваться для быстрого создания профиля.</p>
+
+            <div class="form-group">
+                <label class="checkbox">
+                    <input type="checkbox" class="mr-3" id="telegram_pd_agree">
+                    <span></span>{{ __('Подтверждаю согласие на обработку персональных данных') }}
+                </label>
+            </div>
+
+            @error('telegram')
+                <x-alert type="danger" text="{{ $message }}" :close="false"></x-alert>
+            @enderror
+
+            @if ($telegramBotUsername)
+                <div id="telegram-login-widget" class="mb-5"></div>
+                <form id="telegram-login-form" class="d-none" method="POST" action="{{ route('register.telegram') }}">
+                    @csrf
+                    <input type="hidden" name="id">
+                    <input type="hidden" name="first_name">
+                    <input type="hidden" name="last_name">
+                    <input type="hidden" name="username">
+                    <input type="hidden" name="photo_url">
+                    <input type="hidden" name="auth_date">
+                    <input type="hidden" name="hash">
+                    <input type="hidden" id="telegram_pd_agree_input" name="pd_agree" value="0">
+                </form>
+                <script async src="https://telegram.org/js/telegram-widget.js?22"
+                        data-telegram-login="{{ $telegramBotUsername }}"
+                        data-size="large"
+                        data-radius="4"
+                        data-request-access="write"
+                        data-userpic="false"
+                        data-onauth="handleTelegramAuth"></script>
+            @else
+                <x-alert type="warning" text="Укажите TELEGRAM_LOGIN_BOT_TOKEN и выполните команду telegram:bot:register, чтобы включить авторизацию через Telegram." :close="false"></x-alert>
+            @endif
+        </div>
     </div>
 @endsection
 
 @push('scripts')
     <script>
-        $(document).ready(function() {
-            $("#phone").inputmask("+7 (999) 999 99 99");
-        })
+        document.addEventListener('DOMContentLoaded', function () {
+            window.handleTelegramAuth = function (user) {
+                var agreement = document.getElementById('telegram_pd_agree');
+                if (!agreement || !agreement.checked) {
+                    alert('Для входа через Telegram подтвердите согласие на обработку персональных данных.');
+                    return;
+                }
+
+                var form = document.getElementById('telegram-login-form');
+                if (!form) {
+                    return;
+                }
+
+                ['id', 'first_name', 'last_name', 'username', 'photo_url', 'auth_date', 'hash'].forEach(function (field) {
+                    if (form.elements[field]) {
+                        form.elements[field].value = user[field] || '';
+                    }
+                });
+
+                var pdAgreeInput = document.getElementById('telegram_pd_agree_input');
+                if (pdAgreeInput) {
+                    pdAgreeInput.value = agreement.checked ? '1' : '0';
+                }
+
+                form.submit();
+            };
+        });
     </script>
 @endpush
