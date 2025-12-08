@@ -15,7 +15,7 @@ class CreateUser
             $data['avatar'] = $filename;
         }
 
-        if($data['phone']) {
+        if(isset($data['phone']) && $data['phone']) {
             $data['phone'] = unFormatPhone($data['phone']);
         }
 

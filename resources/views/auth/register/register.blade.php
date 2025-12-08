@@ -2,6 +2,7 @@
 
 @php($telegramLogin = app(\Support\Telegram\TelegramLogin::class))
 @php($telegramBotUsername = $telegramLogin->botUsername())
+@php($telegramLoginToken = config('telegram.login_bot_token'))
 
 @section('content')
     <div class="w-100">
@@ -179,8 +180,10 @@
                         data-request-access="write"
                         data-userpic="false"
                         data-onauth="handleTelegramAuth"></script>
-            @else
+            @elseif (!$telegramLoginToken)
                 <x-alert type="warning" text="Укажите TELEGRAM_LOGIN_BOT_TOKEN и выполните команду telegram:bot:register, чтобы включить авторизацию через Telegram." :close="false"></x-alert>
+            @else
+                <x-alert type="warning" text="Телеграм-бот настроен без username. Укажите TELEGRAM_LOGIN_BOT_USERNAME (например, my_bot) или задайте username в BotFather и повторно выполните telegram:bot:register." :close="false"></x-alert>
             @endif
         </div>
     </div>
