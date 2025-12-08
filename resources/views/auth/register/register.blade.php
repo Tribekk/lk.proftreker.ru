@@ -193,6 +193,8 @@
     <script>
         (function () {
             window.handleTelegramAuth = function (user) {
+                console.log('[TelegramLogin] received payload', user);
+
                 var agreement = document.getElementById('telegram_pd_agree');
                 if (!agreement || !agreement.checked) {
                     alert('Для входа через Telegram подтвердите согласие на обработку персональных данных.');
@@ -215,6 +217,7 @@
                     pdAgreeInput.value = agreement.checked ? '1' : '0';
                 }
 
+                console.log('[TelegramLogin] submitting hidden form', form);
                 form.submit();
             };
         })();
