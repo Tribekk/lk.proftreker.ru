@@ -53,6 +53,6 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         $createUserAction = new CreateUser();
-        return $createUserAction->run($data, false);
+        return $createUserAction->run($data);
     }
 }
