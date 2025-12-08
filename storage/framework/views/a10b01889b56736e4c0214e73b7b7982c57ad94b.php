@@ -1,0 +1,57 @@
+<thead>
+<tr>
+    <th class="fit">
+        <?php echo e(__('№')); ?>
+
+    </th>
+    <th class="min-w-200px">
+        <?php echo e(__('ФИО ученика')); ?>
+
+    </th>
+    <th class="">
+        <?php echo e(__('Дата рождения')); ?>
+
+    </th>
+    <th class="">
+        <?php echo e(__('Отметка заполнения анкеты')); ?>
+
+    </th>
+    <th class="">
+        <?php echo e(__('Отметка прохождения базового теста')); ?>
+
+    </th>
+    <th class="">
+        <?php echo e(__('Проф интересы')); ?>
+
+    </th>
+    <th class="">
+        <?php echo e(__('Портрет личности')); ?>
+
+    </th>
+    <th class="">
+        <?php echo e(__('Рекомендуемые сферы и профессии (типаж)')); ?>
+
+    </th>
+    <th class="">
+        <?php echo e(__('Отметка прохождения глубинного теста')); ?>
+
+    </th>
+    <th class="">
+        <?php echo e(__('Приглашен(а) на глубинное тестирование')); ?>
+
+    </th>
+    <th class="">
+        <?php echo e(__('Родитель привязан к аккаунту')); ?>
+
+    </th>
+    <th class="">
+        <?php echo e(__('Отметка получения консультации')); ?>
+
+    </th>
+    <th class="">
+        <?php echo e(__('Общая оценка по итогам проекта')); ?>
+
+    </th>
+</tr>
+</thead>
+<?php /**PATH /var/www/proftracker/resources/views/school/classes/_show_table/_table-head.blade.php ENDPATH**/ ?>

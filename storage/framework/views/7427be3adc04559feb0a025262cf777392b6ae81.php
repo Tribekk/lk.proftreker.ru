@@ -1,0 +1,43 @@
+<?php if($item->type()->first()->code=="abv"
+    or $item->type()->first()->code=="checkbox"
+    or $item->type()->first()->code=="circle"
+    ): ?>
+
+    <?php $__currentLoopData = $item->answers()->get(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $answer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+
+        <input type="checkbox" id="checkbox_<?php echo e($deepTestItems->first()->id); ?>_<?php echo e($answer->id); ?>" name="deepTestItems[<?php echo e($deepTestItems->first()->id); ?>][<?php echo e($type); ?>][<?php echo e($answer->id); ?>]" value="1"
+
+               <?php if(@$control_values[$deepTestItems->first()->id][$type][$answer->id]==1): ?>
+               checked selected
+                <?php endif; ?>
+
+        >
+        <label for="checkbox_<?php echo e($deepTestItems->first()->id); ?>_<?php echo e($answer->id); ?>"><?php echo e($answer->title); ?></label><br>
+
+
+
+    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+
+<?php endif; ?>
+
+<?php if($item->type()->first()->code=="radio"
+or $item->type()->first()->code=="yns"
+or $item->type()->first()->code=="yn"
+or $item->type()->first()->code=="select_text_answer"
+): ?>
+
+    <?php $__currentLoopData = $item->answers()->get(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $answer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+
+        <input type="radio" id="radio_<?php echo e($deepTestItems->first()->id); ?>_<?php echo e($answer->id); ?>" name="deepTestItems[<?php echo e($deepTestItems->first()->id); ?>][<?php echo e($type); ?>][<?php echo e($answer->id); ?>]" value="1"
+
+               <?php if(@$control_values[$deepTestItems->first()->id][$type][$answer->id]==1): ?>
+               checked selected
+                <?php endif; ?>
+        >
+        <label for="radio_<?php echo e($deepTestItems->first()->id); ?>_<?php echo e($answer->id); ?>"><?php echo e($answer->title); ?></label><br>
+
+
+
+    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+
+<?php endif; ?><?php /**PATH /var/www/proftracker/resources/views/admin/user_profiles/include/deep_test_question_form.blade.php ENDPATH**/ ?>

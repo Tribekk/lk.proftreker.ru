@@ -1,0 +1,25 @@
+@foreach($intellegens_levels as $intellegens_level)
+
+    <table>
+        <tr><td @if($intellegens_level->title=='Средний -')
+                style="color:#9cbd3b"
+                    @endif>{{ $intellegens_level->title }}</td><td width="5"></td>
+            <td>
+
+                <input type="checkbox" name="deepTestItems[intellegense_level][{{$intellegens_level->id}}][{{$type}}]" value="1"
+
+                       @if(@$control_values['intellegense_level'][$intellegens_level->id][$type]==1)
+                       checked selected
+                        @endif
+
+                >
+
+
+            </td></tr>
+
+
+    </table>
+    <Br>
+
+
+@endforeach
