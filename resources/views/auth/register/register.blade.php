@@ -147,7 +147,7 @@
         <div>
             <h4 class="font-weight-bolder text-dark mb-5">{{ __('Или войдите через Telegram') }}</h4>
             <ol class="pl-4 text-muted font-size-lg mb-5">
-                <li>Откройте бота <a href="{{ $telegramBotUsername ? 'https://t.me/'.$telegramBotUsername : '#' }}" target="_blank">{{ $telegramBotUsername ? '@'.$telegramBotUsername : __('нашего Telegram-бота') }}</a> и отправьте команду <code>/code</code>.</li>
+                <li>Откройте бота <a href="{{ $telegramBotUsername ? 'https://t.me/'.$telegramBotUsername : '#' }}" target="_blank">{{ $telegramBotUsername ? $telegramBotUsername : ('нашего Telegram-бота') }}</a> и отправьте команду <code>/code</code>.</li>
                 <li>Получите одноразовый код и введите его ниже.</li>
             </ol>
 
