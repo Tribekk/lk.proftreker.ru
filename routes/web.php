@@ -50,6 +50,7 @@ use Domain\School\Middleware\TeacherOrAdmin;
 use Illuminate\Support\Facades\Route;
 use App\Admin\Controllers\UserController;
 use Domain\UserProfile\Controllers\UserProfileController;
+use App\Telegram\Controllers\WebhookController;
 
 use App\Http\Controllers\projectController;
 use App\Project\Controllers\ExternalProjectActivityKindController;
@@ -68,6 +69,8 @@ Route::get('/', function () {
 
     return redirect(route('login'));
 });
+
+Route::post('telegram/webhook', WebhookController::class)->name('telegram.webhook');
 
 //Route::get('/admin/products/product/add', [Products::class, 'add_product']);
 //

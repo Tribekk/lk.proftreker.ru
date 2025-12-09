@@ -1,7 +1,6 @@
 @extends('layout.register')
 
-@php($telegramLogin = app(\Support\Telegram\TelegramLogin::class))
-@php($telegramBotUsername = $telegramLogin->botUsername())
+@php($telegramBotUsername = config('telegram.login_bot_username'))
 @php($telegramLoginToken = config('telegram.login_bot_token'))
 
 @section('content')
@@ -147,79 +146,55 @@
 
         <div>
             <h4 class="font-weight-bolder text-dark mb-5">{{ __('Или войдите через Telegram') }}</h4>
-            <p class="text-muted font-size-lg mb-5">Telegram-аккаунт может использоваться для быстрого создания профиля.</p>
+            <ol class="pl-4 text-muted font-size-lg mb-5">
+                <li>Откройте бота <a href="{{ $telegramBotUsername ? 'https://t.me/'.$telegramBotUsername : '#' }}" target="_blank">{{ $telegramBotUsername ? '@'.$telegramBotUsername : __('нашего Telegram-бота') }}</a> и отправьте команду <code>/code</code>.</li>
+                <li>Получите одноразовый код и введите его ниже.</li>
+            </ol>
 
-            <div class="form-group">
-                <label class="checkbox">
-                    <input type="checkbox" class="mr-3" id="telegram_pd_agree">
-                    <span></span>{{ __('Подтверждаю согласие на обработку персональных данных') }}
-                </label>
-            </div>
-
-            @error('telegram')
-                <x-alert type="danger" text="{{ $message }}" :close="false"></x-alert>
-            @enderror
-
-            @if ($telegramBotUsername)
-                <div id="telegram-login-widget" class="mb-5"></div>
-                <form id="telegram-login-form" class="d-none" method="POST" action="{{ route('register.telegram') }}">
-                    @csrf
-                    <input type="hidden" name="id">
-                    <input type="hidden" name="first_name">
-                    <input type="hidden" name="last_name">
-                    <input type="hidden" name="username">
-                    <input type="hidden" name="photo_url">
-                    <input type="hidden" name="auth_date">
-                    <input type="hidden" name="hash">
-                    <input type="hidden" id="telegram_pd_agree_input" name="pd_agree" value="0">
-                </form>
-                <script async src="https://telegram.org/js/telegram-widget.js?22"
-                        data-telegram-login="{{ $telegramBotUsername }}"
-                        data-size="large"
-                        data-radius="4"
-                        data-request-access="write"
-                        data-userpic="false"
-                        data-onauth="handleTelegramAuth"></script>
-            @elseif (!$telegramLoginToken)
-                <x-alert type="warning" text="Укажите TELEGRAM_LOGIN_BOT_TOKEN и выполните команду telegram:bot:register, чтобы включить авторизацию через Telegram." :close="false"></x-alert>
-            @else
-                <x-alert type="warning" text="Телеграм-бот настроен без username. Укажите TELEGRAM_LOGIN_BOT_USERNAME (например, my_bot) или задайте username в BotFather и повторно выполните telegram:bot:register." :close="false"></x-alert>
+            @if (!$telegramBotUsername)
+                <x-alert type="warning" text="Укажите TELEGRAM_LOGIN_BOT_TOKEN и TELEGRAM_LOGIN_BOT_USERNAME, затем выполните telegram:bot:register и telegram:webhook set, чтобы включить авторизацию через Telegram." :close="false"></x-alert>
             @endif
+
+            <form method="POST" action="{{ route('register.telegram') }}">
+                @csrf
+
+                <div class="form-group">
+                    <label for="telegram_code" class="font-size-h6 font-weight-bolder text-dark required">{{ __('Код из Telegram') }}</label>
+                    <input
+                        id="telegram_code"
+                        type="text"
+                        class="form-control form-control-solid h-auto py-4 px-6 rounded-lg @error('code') is-invalid @enderror"
+                        name="code"
+                        value="{{ old('code') }}"
+                        placeholder="123456"
+                    >
+                    @error('code')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </div>
+
+                <div class="form-group">
+                    <label class="checkbox">
+                        <input type="checkbox" class="mr-3" name="pd_agree" {{ old('pd_agree') ? 'checked' : '' }}>
+                        <span></span>{{ __('Подтверждаю согласие на обработку персональных данных') }}
+                    </label>
+                    @error('pd_agree')
+                        <span class="invalid-feedback d-block" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </div>
+
+                @error('telegram')
+                    <x-alert type="danger" text="{{ $message }}" :close="false"></x-alert>
+                @enderror
+
+                <button type="submit" class="btn btn-primary font-weight-bolder font-size-h6 px-8 py-4 my-3">
+                    {{ __('Войти по коду Telegram') }}
+                </button>
+            </form>
         </div>
     </div>
 @endsection
-
-@push('scripts')
-    <script>
-        (function () {
-            window.handleTelegramAuth = function (user) {
-                console.log('[TelegramLogin] received payload', user);
-
-                var agreement = document.getElementById('telegram_pd_agree');
-                if (!agreement || !agreement.checked) {
-                    alert('Для входа через Telegram подтвердите согласие на обработку персональных данных.');
-                    return;
-                }
-
-                var form = document.getElementById('telegram-login-form');
-                if (!form) {
-                    return;
-                }
-
-                ['id', 'first_name', 'last_name', 'username', 'photo_url', 'auth_date', 'hash'].forEach(function (field) {
-                    if (form.elements[field]) {
-                        form.elements[field].value = user[field] || '';
-                    }
-                });
-
-                var pdAgreeInput = document.getElementById('telegram_pd_agree_input');
-                if (pdAgreeInput) {
-                    pdAgreeInput.value = agreement.checked ? '1' : '0';
-                }
-
-                console.log('[TelegramLogin] submitting hidden form', form);
-                form.submit();
-            };
-        })();
-    </script>
-@endpush

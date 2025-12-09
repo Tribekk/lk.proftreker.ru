@@ -3,16 +3,15 @@
 namespace App\User\Controllers;
 
 use App\Providers\RouteServiceProvider;
-use App\User\Requests\TelegramLoginRequest;
+use App\User\Requests\TelegramCodeRequest;
 use Domain\User\Actions\CreateUser;
+use Domain\User\Models\TelegramLoginCode;
 use Domain\User\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Support\Controller;
-use Support\Telegram\Exceptions\TelegramAuthException;
-use Support\Telegram\TelegramLogin;
 
 class TelegramAuthController extends Controller
 {
@@ -23,40 +22,40 @@ class TelegramAuthController extends Controller
         $this->middleware('guest');
     }
 
-    public function authenticate(TelegramLoginRequest $request, TelegramLogin $telegramLogin): RedirectResponse
+    public function authenticate(TelegramCodeRequest $request): RedirectResponse
     {
-        Log::info('Telegram login request', ['payload' => $request->all()]);
+        $code = $request->input('code');
+        Log::info('Telegram login via code request', ['code' => $code]);
 
-        try {
-            $payload = $telegramLogin->validate($request->validated());
-        } catch (TelegramAuthException $exception) {
-            Log::warning('Telegram login validation error', ['error' => $exception->getMessage()]);
-            return back()->withErrors(['telegram' => $exception->getMessage()]);
+        $record = TelegramLoginCode::valid()->where('code', $code)->first();
+
+        if (! $record) {
+            Log::warning('Telegram login code not found or expired', ['code' => $code]);
+            return back()->withErrors(['code' => __('Код не найден или его срок действия истёк.')]);
         }
 
-        $user = User::where('telegram_id', $payload['id'])->first();
+        $record->update(['used_at' => now()]);
+
+        $user = User::where('telegram_id', $record->telegram_id)->first();
 
         if (! $user) {
             $user = (new CreateUser())->run([
-                'first_name' => $payload['first_name'] ?? 'Telegram',
-                'last_name' => $payload['last_name'] ?? 'User',
+                'first_name' => $record->first_name ?? 'Telegram',
+                'last_name' => $record->last_name ?? 'User',
                 'middle_name' => null,
                 'email' => null,
                 'password' => Str::random(40),
-                'telegram_id' => $payload['id'],
-                'telegram_username' => $payload['username'] ?? null,
-                'telegram_photo_url' => $payload['photo_url'] ?? null,
+                'telegram_id' => $record->telegram_id,
+                'telegram_username' => $record->username,
                 'phone' => null,
             ]);
+            Log::info('Telegram login created new user', ['user_id' => $user->id]);
         } else {
-            Log::info('Telegram login: user already exists', ['user_id' => $user->id, 'telegram_id' => $payload['id']]);
+            Log::info('Telegram login existing user', ['user_id' => $user->id]);
         }
 
-        Log::info('Telegram login: logging in user', ['user_id' => $user->id]);
-
         Auth::login($user, true);
-
-        Log::info('Telegram login: redirecting', ['redirect_to' => $this->redirectTo]);
+        Log::info('Telegram login success', ['user_id' => $user->id]);
 
         return redirect()->intended($this->redirectTo);
     }
