@@ -38,7 +38,7 @@
         <td class="fit text-right" style="vertical-align: middle;">
             @php($rootAdminPhone = unFormatPhone('+79221980375'))
             @php($userPhone = $user->phone ? unFormatPhone($user->phone) : null)
-            @if(!$user->isAdmin && $userPhone !== $rootAdminPhone)
+            @if($userPhone !== $rootAdminPhone)
                 <form action="{{ route('admin.users.destroy', $user) }}"
                       method="POST"
                       onsubmit="return confirm('Удалить пользователя {{ $user->fullName }}?');">
@@ -56,3 +56,4 @@
     </tr>
 @endforeach
 </tbody>
+

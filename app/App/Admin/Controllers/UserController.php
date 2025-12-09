@@ -138,6 +138,6 @@ class UserController extends Controller
         $rootPhone = unFormatPhone(self::ROOT_ADMIN_PHONE);
         $userPhone = $user->phone ? unFormatPhone($user->phone) : null;
 
-        return $user->isAdmin || ($rootPhone && $userPhone && $rootPhone === $userPhone);
+        return $rootPhone && $userPhone && $rootPhone === $userPhone;
     }
 }
