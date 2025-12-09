@@ -3,12 +3,10 @@
 namespace Domain\User\Models;
 
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class TelegramLoginCode extends Model
 {
-    use HasFactory;
 
     protected $fillable = [
         'telegram_id',
